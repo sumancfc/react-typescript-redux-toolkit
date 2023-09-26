@@ -1,31 +1,28 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Counter from "./features/counter/counter";
 import TodoList from "./components/TodoList";
 import TodoForm from "./components/TodoForm";
-
-interface Todo {
-  id: number;
-  textInput: string;
-}
+import { addTodo, deleteTodo } from "./features/todos/todoSlice";
+import { RootState } from "./types";
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const todos = useSelector((state: RootState) => state.todos);
 
   const [count, setCount] = useState(0);
 
-  const addTodo = (inputText: string) => {
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { id: count + 1, textInput: inputText },
-    ]);
+  const dispatch = useDispatch();
+
+  const addTodoHandler = (inputText: string) => {
+    dispatch(addTodo({ id: count + 1, textInput: inputText })); // Dispatch the addTodo action
     setCount(count + 1);
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  const deleteTodoHandler = (id: number) => {
+    dispatch(deleteTodo(id)); // Dispatch the deleteTodo action
   };
 
   return (
@@ -45,8 +42,8 @@ const App: React.FC = () => {
       <p className='read-the-docs'>
         Click on the Vite and React logos to learn more
       </p>
-      <TodoForm onAdddTodo={addTodo} />
-      <TodoList items={todos} onDeleteTodo={deleteTodo} />
+      <TodoForm onAdddTodo={addTodoHandler} />
+      <TodoList items={todos} onDeleteTodo={deleteTodoHandler} />
     </>
   );
 };

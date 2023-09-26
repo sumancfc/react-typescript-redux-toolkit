@@ -1,8 +1,5 @@
 import React, { useRef } from "react";
-
-interface TodoFormProps {
-  onAdddTodo: (inputText: string) => void;
-}
+import { TodoFormProps } from "../types";
 
 const TodoForm: React.FC<TodoFormProps> = ({ onAdddTodo }) => {
   const textInputRef = useRef<HTMLInputElement>(null);
